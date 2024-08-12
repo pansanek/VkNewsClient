@@ -1,8 +1,8 @@
-package com.sumin.vknewsclient
+package ru.potemkin.vknewsclient
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sumin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.FeedPost
 
 class CommentsViewModelFactory(
     private val feedPost: FeedPost

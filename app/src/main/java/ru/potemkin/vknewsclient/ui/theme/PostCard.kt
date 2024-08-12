@@ -1,4 +1,4 @@
-package com.sumin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.ui.theme
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -17,10 +17,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.sumin.vknewsclient.R
-import com.sumin.vknewsclient.domain.FeedPost
-import com.sumin.vknewsclient.domain.StatisticItem
-import com.sumin.vknewsclient.domain.StatisticType
+import ru.potemkin.vknewsclient.R
+import ru.potemkin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.StatisticItem
+import ru.potemkin.vknewsclient.domain.StatisticType
 
 @Composable
 fun PostCard(

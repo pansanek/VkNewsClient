@@ -1,11 +1,11 @@
-package com.sumin.vknewsclient.navigation
+package ru.potemkin.vknewsclient.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.sumin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.FeedPost
 
 fun NavGraphBuilder.homeScreenNavGraph(
     newsFeedScreenContent: @Composable () -> Unit,

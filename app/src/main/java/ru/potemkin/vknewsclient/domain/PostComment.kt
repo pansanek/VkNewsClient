@@ -1,6 +1,6 @@
-package com.sumin.vknewsclient.domain
+package ru.potemkin.vknewsclient.domain
 
-import com.sumin.vknewsclient.R
+import ru.potemkin.vknewsclient.R
 
 data class PostComment(
     val id: Int,

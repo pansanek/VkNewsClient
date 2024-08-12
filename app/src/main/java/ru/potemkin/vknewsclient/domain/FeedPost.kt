@@ -1,10 +1,10 @@
-package com.sumin.vknewsclient.domain
+package ru.potemkin.vknewsclient.domain
 
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.navigation.NavType
 import com.google.gson.Gson
-import com.sumin.vknewsclient.R
+import ru.potemkin.vknewsclient.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

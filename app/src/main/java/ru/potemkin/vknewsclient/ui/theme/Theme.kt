@@ -1,4 +1,4 @@
-package com.sumin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.ui.theme
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme

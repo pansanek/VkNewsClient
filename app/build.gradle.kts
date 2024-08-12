@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -18,6 +19,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        addManifestPlaceholders(mapOf(
+            "VKIDRedirectHost" to "vk.com", // Обычно vk.com.
+            "VKIDRedirectScheme" to "vk1233445", // Строго в формате vk{ID приложения}.
+            "VKIDClientID" to "52132940",
+            "VKIDClientSecret" to "MkjPb2h12hSusduEakgw"
+        ))
     }
 
     buildTypes {
@@ -60,12 +67,15 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation("androidx.navigation:navigation-compose:2.5.2")
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.1")
-    implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation("androidx.compose.ui:ui:1.2.0")
-    implementation("androidx.compose.material:material:1.2.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0")
+    implementation(libs.androidx.navigation.compose)
+    implementation ("com.vk:android-sdk-core:4.1.0")
+    implementation ("com.vk:android-sdk-api:4.1.0")
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.coil.compose)
+    implementation(libs.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.ui.tooling.preview)
+    implementation (libs.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

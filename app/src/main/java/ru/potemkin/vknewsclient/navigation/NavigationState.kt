@@ -1,11 +1,11 @@
-package com.sumin.vknewsclient.navigation
+package ru.potemkin.vknewsclient.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.sumin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.FeedPost
 
 class NavigationState(
     val navHostController: NavHostController

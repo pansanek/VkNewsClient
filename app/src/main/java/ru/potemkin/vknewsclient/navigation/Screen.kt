@@ -1,8 +1,8 @@
-package com.sumin.vknewsclient.navigation
+package ru.potemkin.vknewsclient.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import com.sumin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.FeedPost
 
 sealed class Screen(
     val route: String

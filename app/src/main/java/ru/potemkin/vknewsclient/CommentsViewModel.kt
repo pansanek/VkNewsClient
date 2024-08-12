@@ -1,11 +1,11 @@
-package com.sumin.vknewsclient
+package ru.potemkin.vknewsclient
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sumin.vknewsclient.domain.FeedPost
-import com.sumin.vknewsclient.domain.PostComment
-import com.sumin.vknewsclient.ui.theme.CommentsScreenState
+import ru.potemkin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.PostComment
+import ru.potemkin.vknewsclient.ui.theme.CommentsScreenState
 
 class CommentsViewModel(
     feedPost: FeedPost

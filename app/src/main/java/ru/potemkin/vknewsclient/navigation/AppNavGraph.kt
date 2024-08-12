@@ -1,10 +1,10 @@
-package com.sumin.vknewsclient.navigation
+package ru.potemkin.vknewsclient.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.sumin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.FeedPost
 
 @Composable
 fun AppNavGraph(

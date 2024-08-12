@@ -1,4 +1,4 @@
-package com.sumin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.ui.theme
 
 import androidx.compose.foundation.clickable
 import androidx.compose.material.*
@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.sumin.vknewsclient.navigation.AppNavGraph
-import com.sumin.vknewsclient.navigation.rememberNavigationState
+import ru.potemkin.vknewsclient.navigation.AppNavGraph
+import ru.potemkin.vknewsclient.navigation.rememberNavigationState
 
 @Composable
 fun MainScreen() {

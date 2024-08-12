@@ -1,12 +1,12 @@
-package com.sumin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.ui.theme
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.sumin.vknewsclient.R
-import com.sumin.vknewsclient.navigation.Screen
+import ru.potemkin.vknewsclient.R
+import ru.potemkin.vknewsclient.navigation.Screen
 
 sealed class NavigationItem(
     val screen: Screen,
