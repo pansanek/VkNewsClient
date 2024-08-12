@@ -1,4 +1,4 @@
-package com.sumin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.ui.theme
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +15,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sumin.vknewsclient.NewsFeedViewModel
-import com.sumin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.NewsFeedViewModel
+import ru.potemkin.vknewsclient.domain.FeedPost
 
 @Composable
 fun HomeScreen(
