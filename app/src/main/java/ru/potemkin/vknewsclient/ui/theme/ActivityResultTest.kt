@@ -16,6 +16,7 @@ import coil.compose.AsyncImage
 @Composable
 fun ActivityResultTest() {
     var imageUri by remember {
+
         mutableStateOf(Uri.EMPTY)
     }
 
@@ -37,17 +38,12 @@ fun ActivityResultTest() {
             contentDescription = null
         )
         Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Blue,
                 contentColor = Color.White
             ),
-            onClick = {
-                launcher.launch("image/*")
-            }
-        ) {
+            onClick = { launcher.launch("image/*") }) {
             Text(text = "Get image")
         }
     }
