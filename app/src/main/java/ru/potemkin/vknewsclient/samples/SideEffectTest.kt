@@ -1,4 +1,4 @@
-package ru.potemkin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.samples
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import java.util.logging.Handler
 
 @Composable
 fun SideEffectTest(number: MyNumber) {

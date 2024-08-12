@@ -1,4 +1,4 @@
-package ru.potemkin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.presentation.comments
 
 import ru.potemkin.vknewsclient.domain.FeedPost
 import ru.potemkin.vknewsclient.domain.PostComment

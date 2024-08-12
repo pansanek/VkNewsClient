@@ -1,4 +1,4 @@
-package ru.potemkin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.samples
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

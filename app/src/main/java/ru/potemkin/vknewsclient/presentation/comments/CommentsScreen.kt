@@ -1,4 +1,4 @@
-package ru.potemkin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.presentation.comments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -15,10 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.potemkin.vknewsclient.CommentsViewModel
-import ru.potemkin.vknewsclient.CommentsViewModelFactory
 import ru.potemkin.vknewsclient.domain.FeedPost
 import ru.potemkin.vknewsclient.domain.PostComment
+import ru.potemkin.vknewsclient.ui.theme.VkNewsClientTheme
 
 @Composable
 fun CommentsScreen(

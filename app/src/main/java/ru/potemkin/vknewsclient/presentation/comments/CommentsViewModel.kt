@@ -1,11 +1,10 @@
-package ru.potemkin.vknewsclient
+package ru.potemkin.vknewsclient.presentation.comments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.potemkin.vknewsclient.domain.FeedPost
 import ru.potemkin.vknewsclient.domain.PostComment
-import ru.potemkin.vknewsclient.ui.theme.CommentsScreenState
 
 class CommentsViewModel(
     feedPost: FeedPost

@@ -1,11 +1,10 @@
-package ru.potemkin.vknewsclient
+package ru.potemkin.vknewsclient.presentation.news
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.potemkin.vknewsclient.domain.FeedPost
 import ru.potemkin.vknewsclient.domain.StatisticItem
-import ru.potemkin.vknewsclient.ui.theme.NewsFeedScreenState
 
 class NewsFeedViewModel : ViewModel() {
 

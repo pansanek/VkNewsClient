@@ -1,4 +1,4 @@
-package ru.potemkin.vknewsclient
+package ru.potemkin.vknewsclient.presentation.comments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

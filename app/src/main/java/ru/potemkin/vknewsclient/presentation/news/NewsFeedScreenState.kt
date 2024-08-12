@@ -1,4 +1,4 @@
-package ru.potemkin.vknewsclient.ui.theme
+package ru.potemkin.vknewsclient.presentation.news
 
 import ru.potemkin.vknewsclient.domain.FeedPost
 
