@@ -1,6 +1,7 @@
 package ru.potemkin.vknewsclient.data.repository
 
 import android.app.Application
+import android.util.Log
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import ru.potemkin.vknewsclient.data.mapper.NewsFeedMapper
@@ -21,14 +22,24 @@ class NewsFeedRepository(application: Application) {
     val feedPosts: List<FeedPost>
         get() = _feedPosts.toList()
 
+    private var nextFrom: String? = null
+
     suspend fun loadRecommendations(): List<FeedPost> {
-        val response = apiService.loadRecommendations(getAccessToken())
+        val startFrom = nextFrom
+
+        if (startFrom == null && feedPosts.isNotEmpty()) return feedPosts
+
+        val response = if (startFrom == null) apiService.loadRecommendations(getAccessToken())
+        else apiService.loadRecommendations(getAccessToken(), startFrom)
+
+        nextFrom = response.newsFeedContent.nextFrom
         val posts = mapper.mapResponseToPosts(response)
         _feedPosts.addAll(posts)
         return posts
     }
 
     private fun getAccessToken(): String {
+        Log.d("TOKENTOKEN", token?.accessToken.toString())
         return token?.accessToken ?: throw IllegalStateException("Token is null")
     }
 
