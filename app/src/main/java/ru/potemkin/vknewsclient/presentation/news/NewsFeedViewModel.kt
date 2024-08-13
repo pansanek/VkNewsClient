@@ -12,16 +12,16 @@ import ru.potemkin.vknewsclient.domain.StatisticItem
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.launch
+import ru.potemkin.vknewsclient.data.repository.NewsFeedRepository
 
 class NewsFeedViewModel(application: Application) : AndroidViewModel(application) {
-
 
     private val initialState = NewsFeedScreenState.Initial
 
     private val _screenState = MutableLiveData<NewsFeedScreenState>(initialState)
     val screenState: LiveData<NewsFeedScreenState> = _screenState
 
-    private val mapper = NewsFeedMapper()
+    private val repository = NewsFeedRepository(application)
 
     init {
         loadRecommendations()
@@ -29,11 +29,15 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
 
     private fun loadRecommendations() {
         viewModelScope.launch {
-            val storage = VKPreferencesKeyValueStorage(getApplication())
-            val token = VKAccessToken.restore(storage) ?: return@launch
-            val response = ApiFactory.apiService.loadRecommendations(token.accessToken)
-            val feedPosts = mapper.mapResponseToPosts(response)
+            val feedPosts = repository.loadRecommendations()
             _screenState.value = NewsFeedScreenState.Posts(posts = feedPosts)
+        }
+    }
+
+    fun changeLikeStatus(feedPost: FeedPost) {
+        viewModelScope.launch {
+            repository.changeLikeStatus(feedPost)
+            _screenState.value = NewsFeedScreenState.Posts(posts = repository.feedPosts)
         }
     }
 
@@ -74,8 +78,4 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
         _screenState.value = NewsFeedScreenState.Posts(posts = oldPosts)
     }
 }
-
-
-
-
 
