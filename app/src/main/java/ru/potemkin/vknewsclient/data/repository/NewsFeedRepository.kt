@@ -6,14 +6,17 @@ import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import okhttp3.Dispatcher
 import ru.potemkin.vknewsclient.data.mapper.NewsFeedMapper
@@ -59,7 +62,13 @@ class NewsFeedRepository(application: Application) {
             _feedPosts.addAll(posts)
             emit(feedPosts)
         }
+    }.retry (2){
+        delay(RETRY_TIMEOUT)
+        true
+    }.catch {
+
     }
+
     val recommendations: StateFlow<List<FeedPost>> = loadedListFlow.mergeWith(refreshedListFlow)
         .stateIn(
             scope = coroutineScope,
@@ -86,13 +95,16 @@ class NewsFeedRepository(application: Application) {
         refreshedListFlow.emit(feedPosts)
     }
 
-    suspend fun getComments(feedPost: FeedPost): List<PostComment> {
+    fun getComments(feedPost: FeedPost): Flow<List<PostComment>> = flow {
         val comments = apiService.getComments(
             getAccessToken(),
             feedPost.communityId,
             feedPost.id
         )
-        return mapper.mapResponseToComments(comments)
+        emit(mapper.mapResponseToComments(comments))
+    }.retry{
+        delay(RETRY_TIMEOUT)
+        true
     }
 
     suspend fun changeLikeStatus(feedPost: FeedPost) {
@@ -118,5 +130,11 @@ class NewsFeedRepository(application: Application) {
         val postIndex = _feedPosts.indexOf(feedPost)
         _feedPosts[postIndex] = newPost
         refreshedListFlow.emit(feedPosts)
+    }
+
+
+    companion object{
+
+        private const val RETRY_TIMEOUT = 300L
     }
 }
