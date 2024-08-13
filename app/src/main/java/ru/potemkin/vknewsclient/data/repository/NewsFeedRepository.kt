@@ -7,6 +7,7 @@ import com.vk.api.sdk.auth.VKAccessToken
 import ru.potemkin.vknewsclient.data.mapper.NewsFeedMapper
 import ru.potemkin.vknewsclient.data.network.ApiFactory
 import ru.potemkin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.PostComment
 import ru.potemkin.vknewsclient.domain.StatisticItem
 import ru.potemkin.vknewsclient.domain.StatisticType
 
@@ -49,6 +50,15 @@ class NewsFeedRepository(application: Application) {
             feedPost.id
         )
         _feedPosts.remove(feedPost)
+    }
+
+    suspend fun getComments(feedPost: FeedPost):List<PostComment>{
+        val comments = apiService.getComments(
+            getAccessToken(),
+            feedPost.communityId,
+            feedPost.id
+        )
+        return mapper.mapResponseToComments(comments)
     }
 
     suspend fun changeLikeStatus(feedPost: FeedPost) {
