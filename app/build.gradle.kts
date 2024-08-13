@@ -77,6 +77,8 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation (libs.gson)
     testImplementation(libs.junit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
