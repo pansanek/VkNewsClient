@@ -9,16 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
-import okhttp3.Dispatcher
 import ru.potemkin.vknewsclient.data.mapper.NewsFeedMapper
 import ru.potemkin.vknewsclient.data.network.ApiFactory
 import ru.potemkin.vknewsclient.domain.FeedPost
@@ -26,11 +22,13 @@ import ru.potemkin.vknewsclient.domain.PostComment
 import ru.potemkin.vknewsclient.domain.StatisticItem
 import ru.potemkin.vknewsclient.domain.StatisticType
 import ru.potemkin.vknewsclient.extensions.mergeWith
+import ru.potemkin.vknewsclient.domain.AuthState
 
 class NewsFeedRepository(application: Application) {
 
     private val storage = VKPreferencesKeyValueStorage(application)
-    private val token = VKAccessToken.restore(storage)
+    private val token
+        get() = VKAccessToken.restore(storage)
 
     private val apiService = ApiFactory.apiService
     private val mapper = NewsFeedMapper()
@@ -42,6 +40,24 @@ class NewsFeedRepository(application: Application) {
     private var nextFrom: String? = null
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    private val checkAuthStateEvent = MutableSharedFlow<Unit>(replay = 1)
+
+    val authStateFlow = flow{
+        checkAuthStateEvent.collect{
+            checkAuthStateEvent.emit(Unit)
+            Log.d("TOKENTOKEN",token?.accessToken.toString())
+            val currentToken = token
+            val loggedIn = currentToken != null && currentToken.isValid
+            val authState = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
+            emit(authState)
+        }
+    }.stateIn(
+        coroutineScope,
+        SharingStarted.Lazily,
+        AuthState.Initial
+    )
+
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
     private val refreshedListFlow = MutableSharedFlow<List<FeedPost>>()
     private val loadedListFlow = flow {
@@ -67,6 +83,10 @@ class NewsFeedRepository(application: Application) {
         true
     }.catch {
 
+    }
+
+    suspend fun checkAuthState(){
+        checkAuthStateEvent.emit(Unit)
     }
 
     val recommendations: StateFlow<List<FeedPost>> = loadedListFlow.mergeWith(refreshedListFlow)

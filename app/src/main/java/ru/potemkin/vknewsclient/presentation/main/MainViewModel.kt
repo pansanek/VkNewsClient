@@ -6,27 +6,24 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKPreferencesKeyValueStorage
 import com.vk.api.sdk.auth.VKAccessToken
 import com.vk.api.sdk.auth.VKAuthenticationResult
+import kotlinx.coroutines.launch
+import ru.potemkin.vknewsclient.data.repository.NewsFeedRepository
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _authState = MutableLiveData<AuthState>(AuthState.Initial)
-    val authState: LiveData<AuthState> = _authState
+    private val repository = NewsFeedRepository(application)
 
-    init {
-        val storage = VKPreferencesKeyValueStorage(application)
-        val token = VKAccessToken.restore(storage)
-        Log.d("TOKENTOKEN",token?.accessToken.toString())
-        val loggedIn = token != null && token.isValid
-        _authState.value = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
-    }
-    fun performAuthResult(result: VKAuthenticationResult){
-        if (result is VKAuthenticationResult.Success){
-            _authState.value = AuthState.Authorized
-        } else
-            _authState.value = AuthState.NotAuthorized
+    val authState = repository.authStateFlow
+
+
+    fun performAuthResult() {
+        viewModelScope.launch {
+            repository.checkAuthState()
+        }
     }
 }
