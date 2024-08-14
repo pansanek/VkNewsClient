@@ -1,29 +1,26 @@
 package ru.potemkin.vknewsclient.presentation.main
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vk.api.sdk.VK
-import com.vk.api.sdk.VKPreferencesKeyValueStorage
-import com.vk.api.sdk.auth.VKAccessToken
-import com.vk.api.sdk.auth.VKAuthenticationResult
 import kotlinx.coroutines.launch
-import ru.potemkin.vknewsclient.data.repository.NewsFeedRepository
+import ru.potemkin.vknewsclient.data.repository.NewsFeedRepositoryImpl
+import ru.potemkin.vknewsclient.domain.usecases.CheckAuthStateUseCase
+import ru.potemkin.vknewsclient.domain.usecases.GetAuthStateFlowUseCase
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = NewsFeedRepository(application)
+    private val repository = NewsFeedRepositoryImpl(application)
 
-    val authState = repository.authStateFlow
+    private val getAuthStateFlowUseCase = GetAuthStateFlowUseCase(repository)
+    private val checkAuthStateUseCase = CheckAuthStateUseCase(repository)
+
+    val authState = getAuthStateFlowUseCase()
 
 
     fun performAuthResult() {
         viewModelScope.launch {
-            repository.checkAuthState()
+            checkAuthStateUseCase()
         }
     }
 }

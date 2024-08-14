@@ -1,6 +1,5 @@
 package ru.potemkin.vknewsclient.presentation.news
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -20,9 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import ru.potemkin.vknewsclient.R
-import ru.potemkin.vknewsclient.domain.FeedPost
-import ru.potemkin.vknewsclient.domain.StatisticItem
-import ru.potemkin.vknewsclient.domain.StatisticType
+import ru.potemkin.vknewsclient.domain.entity.FeedPost
+import ru.potemkin.vknewsclient.domain.entity.StatisticItem
+import ru.potemkin.vknewsclient.domain.entity.StatisticType
 import ru.potemkin.vknewsclient.ui.theme.DarkRed
 
 @Composable

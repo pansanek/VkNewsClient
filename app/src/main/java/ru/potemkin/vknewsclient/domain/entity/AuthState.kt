@@ -1,4 +1,4 @@
-package ru.potemkin.vknewsclient.domain
+package ru.potemkin.vknewsclient.domain.entity
 
 sealed class AuthState {
 

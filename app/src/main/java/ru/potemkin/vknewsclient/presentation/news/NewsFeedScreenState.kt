@@ -1,6 +1,6 @@
 package ru.potemkin.vknewsclient.presentation.news
 
-import ru.potemkin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.entity.FeedPost
 
 sealed class NewsFeedScreenState {
 

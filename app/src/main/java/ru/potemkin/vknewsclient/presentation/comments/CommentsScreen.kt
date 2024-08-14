@@ -1,7 +1,6 @@
 package ru.potemkin.vknewsclient.presentation.comments
 
 import android.app.Application
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,19 +10,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import ru.potemkin.vknewsclient.domain.FeedPost
-import ru.potemkin.vknewsclient.domain.PostComment
-import ru.potemkin.vknewsclient.ui.theme.VkNewsClientTheme
+import ru.potemkin.vknewsclient.domain.entity.FeedPost
+import ru.potemkin.vknewsclient.domain.entity.PostComment
 
 @Composable
 fun CommentsScreen(

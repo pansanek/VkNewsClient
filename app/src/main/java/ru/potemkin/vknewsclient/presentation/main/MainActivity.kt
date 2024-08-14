@@ -8,7 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
-import ru.potemkin.vknewsclient.domain.AuthState
+import ru.potemkin.vknewsclient.domain.entity.AuthState
 import ru.potemkin.vknewsclient.ui.theme.VkNewsClientTheme
 
 class MainActivity : ComponentActivity() {

@@ -2,12 +2,12 @@ package ru.potemkin.vknewsclient.data.mapper
 
 import ru.potemkin.vknewsclient.data.model.CommentsResponseDto
 import ru.potemkin.vknewsclient.data.model.NewsFeedResponseDto
-import ru.potemkin.vknewsclient.domain.FeedPost
-import ru.potemkin.vknewsclient.domain.PostComment
+import ru.potemkin.vknewsclient.domain.entity.FeedPost
+import ru.potemkin.vknewsclient.domain.entity.PostComment
 import java.text.SimpleDateFormat
 import java.util.*
-import ru.potemkin.vknewsclient.domain.StatisticItem
-import ru.potemkin.vknewsclient.domain.StatisticType
+import ru.potemkin.vknewsclient.domain.entity.StatisticItem
+import ru.potemkin.vknewsclient.domain.entity.StatisticType
 import kotlin.math.absoluteValue
 
 class NewsFeedMapper {

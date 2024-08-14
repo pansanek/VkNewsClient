@@ -2,7 +2,7 @@ package ru.potemkin.vknewsclient.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import ru.potemkin.vknewsclient.domain.FeedPost
+import ru.potemkin.vknewsclient.domain.entity.FeedPost
 
 sealed class Screen(
     val route: String
