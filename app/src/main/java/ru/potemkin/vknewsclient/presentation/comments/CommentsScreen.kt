@@ -19,16 +19,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import ru.potemkin.vknewsclient.domain.entity.FeedPost
 import ru.potemkin.vknewsclient.domain.entity.PostComment
+import ru.potemkin.vknewsclient.presentation.NewsFeedApplication
 import ru.potemkin.vknewsclient.presentation.ViewModelFactory
 
 @Composable
 fun CommentsScreen(
-    viewModelFactory: ViewModelFactory,
     onBackPressed: () -> Unit,
     feedPost: FeedPost,
 ) {
+    val component =
+        (LocalContext.current.applicationContext as NewsFeedApplication)
+            .component
+            .getCommentsScreenComponentFactory()
+            .create(feedPost)
     val viewModel: CommentsViewModel = viewModel(
-        factory = viewModelFactory
+        factory = component.getViewModelFactory()
     )
     val screenState = viewModel.screenState.collectAsState(CommentsScreenState.Initial)
     val currentState = screenState.value
@@ -87,8 +92,7 @@ private fun CommentItem(
         AsyncImage(
             modifier = Modifier
                 .size(48.dp)
-                .clip(CircleShape)
-            ,
+                .clip(CircleShape),
             model = comment.authorAvatarUrl,
             contentDescription = null
         )
