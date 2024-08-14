@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import ru.potemkin.vknewsclient.data.mapper.NewsFeedMapper
 import ru.potemkin.vknewsclient.data.network.ApiFactory
+import ru.potemkin.vknewsclient.data.network.ApiService
 import ru.potemkin.vknewsclient.domain.entity.FeedPost
 import ru.potemkin.vknewsclient.domain.entity.PostComment
 import ru.potemkin.vknewsclient.domain.entity.StatisticItem
@@ -24,15 +25,18 @@ import ru.potemkin.vknewsclient.domain.entity.StatisticType
 import ru.potemkin.vknewsclient.extensions.mergeWith
 import ru.potemkin.vknewsclient.domain.entity.AuthState
 import ru.potemkin.vknewsclient.domain.repository.NewsFeedRepository
+import javax.inject.Inject
 
-class NewsFeedRepositoryImpl(application: Application) : NewsFeedRepository {
+class NewsFeedRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val mapper: NewsFeedMapper,
+    private val storage: VKPreferencesKeyValueStorage,
+) : NewsFeedRepository {
 
-    private val storage = VKPreferencesKeyValueStorage(application)
+
     private val token
         get() = VKAccessToken.restore(storage)
 
-    private val apiService = ApiFactory.apiService
-    private val mapper = NewsFeedMapper()
 
     private val _feedPosts = mutableListOf<FeedPost>()
     private val feedPosts: List<FeedPost>
@@ -42,21 +46,20 @@ class NewsFeedRepositoryImpl(application: Application) : NewsFeedRepository {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    private val checkAuthStateEvent = MutableSharedFlow<Unit>(replay = 1)
+    private val checkAuthStateEvents = MutableSharedFlow<Unit>(replay = 1)
 
-    val authStateFlow = flow{
-        checkAuthStateEvent.collect{
-            checkAuthStateEvent.emit(Unit)
-            Log.d("TOKENTOKEN",token?.accessToken.toString())
+    private val authStateFlow = flow {
+        checkAuthStateEvents.emit(Unit)
+        checkAuthStateEvents.collect {
             val currentToken = token
             val loggedIn = currentToken != null && currentToken.isValid
             val authState = if (loggedIn) AuthState.Authorized else AuthState.NotAuthorized
             emit(authState)
         }
     }.stateIn(
-        coroutineScope,
-        SharingStarted.Lazily,
-        AuthState.Initial
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = AuthState.Initial
     )
 
     private val nextDataNeededEvents = MutableSharedFlow<Unit>(replay = 1)
@@ -79,18 +82,19 @@ class NewsFeedRepositoryImpl(application: Application) : NewsFeedRepository {
             _feedPosts.addAll(posts)
             emit(feedPosts)
         }
-    }.retry (2){
+    }.retry(2) {
         delay(RETRY_TIMEOUT)
         true
     }.catch {
 
     }
 
-    override suspend fun checkAuthState(){
-        checkAuthStateEvent.emit(Unit)
+    override suspend fun checkAuthState() {
+        checkAuthStateEvents.emit(Unit)
     }
 
-    val recommendations: StateFlow<List<FeedPost>> = loadedListFlow.mergeWith(refreshedListFlow)
+    private val recommendations: StateFlow<List<FeedPost>> = loadedListFlow
+        .mergeWith(refreshedListFlow)
         .stateIn(
             scope = coroutineScope,
             started = SharingStarted.Lazily,
@@ -118,7 +122,7 @@ class NewsFeedRepositoryImpl(application: Application) : NewsFeedRepository {
 
     override fun getAuthStateFlow(): StateFlow<AuthState> = authStateFlow
 
-    override fun getRecommendations(): StateFlow<List<FeedPost>>  = recommendations
+    override fun getRecommendations(): StateFlow<List<FeedPost>> = recommendations
 
     override fun getComments(feedPost: FeedPost): StateFlow<List<PostComment>> = flow {
         val comments = apiService.getComments(
@@ -127,7 +131,7 @@ class NewsFeedRepositoryImpl(application: Application) : NewsFeedRepository {
             feedPost.id
         )
         emit(mapper.mapResponseToComments(comments))
-    }.retry{
+    }.retry {
         delay(RETRY_TIMEOUT)
         true
     }.stateIn(
@@ -162,7 +166,7 @@ class NewsFeedRepositoryImpl(application: Application) : NewsFeedRepository {
     }
 
 
-    companion object{
+    companion object {
 
         private const val RETRY_TIMEOUT = 300L
     }

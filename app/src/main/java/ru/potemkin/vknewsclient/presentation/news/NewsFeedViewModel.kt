@@ -3,6 +3,7 @@ package ru.potemkin.vknewsclient.presentation.news
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ru.potemkin.vknewsclient.domain.entity.FeedPost
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,22 +19,21 @@ import ru.potemkin.vknewsclient.domain.usecases.DeletePostUseCase
 import ru.potemkin.vknewsclient.domain.usecases.GetRecommendationsUseCase
 import ru.potemkin.vknewsclient.domain.usecases.LoadNextDataUseCase
 import ru.potemkin.vknewsclient.extensions.mergeWith
+import javax.inject.Inject
 
-class NewsFeedViewModel(application: Application) : AndroidViewModel(application) {
+class NewsFeedViewModel @Inject constructor(
+    private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    private val loadNextDataUseCase: LoadNextDataUseCase,
+    private val changeLikeStatusUseCase: ChangeLikeStatusUseCase,
+    private val deletePostUseCase: DeletePostUseCase,
+) : ViewModel() {
 
-    private val repository = NewsFeedRepositoryImpl(application)
-
-    private val getRecommendationsUseCase = GetRecommendationsUseCase(repository)
-    private val loadNextDataUseCase = LoadNextDataUseCase(repository)
-    private val changeLikeStatusUseCase = ChangeLikeStatusUseCase(repository)
-    private val deletePostUseCase = DeletePostUseCase(repository)
 
     private val recommendationsFlow = getRecommendationsUseCase()
 
-    private val reccomendationFlow = repository.recommendations
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, _, ->
-        Log.d("NewsFeedViewModel","Exception caught")
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+        Log.d("NewsFeedViewModel", "Exception caught")
     }
 
     private val loadNextDataFlow = MutableSharedFlow<NewsFeedScreenState>()

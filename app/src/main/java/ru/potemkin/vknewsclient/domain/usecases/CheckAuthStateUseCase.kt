@@ -1,8 +1,9 @@
 package ru.potemkin.vknewsclient.domain.usecases
 
 import ru.potemkin.vknewsclient.domain.repository.NewsFeedRepository
+import javax.inject.Inject
 
-class CheckAuthStateUseCase(
+class CheckAuthStateUseCase @Inject constructor(
     private val repository: NewsFeedRepository
 ) {
 

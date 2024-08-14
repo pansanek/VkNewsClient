@@ -1,8 +1,9 @@
 package ru.potemkin.vknewsclient.domain.usecases
 
 import ru.potemkin.vknewsclient.domain.repository.NewsFeedRepository
+import javax.inject.Inject
 
-class LoadNextDataUseCase(
+class LoadNextDataUseCase @Inject constructor(
     private val repository: NewsFeedRepository
 ) {
 
