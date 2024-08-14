@@ -11,34 +11,30 @@ import com.vk.api.sdk.auth.VKScope
 import ru.potemkin.vknewsclient.domain.entity.AuthState
 import ru.potemkin.vknewsclient.presentation.NewsFeedApplication
 import ru.potemkin.vknewsclient.presentation.ViewModelFactory
+import ru.potemkin.vknewsclient.presentation.getApplicationComponent
 import ru.potemkin.vknewsclient.ui.theme.VkNewsClientTheme
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val component by lazy {
-        (application as NewsFeedApplication).component
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        component.inject(this)
         super.onCreate(savedInstanceState)
         setContent {
+
+            val component = getApplicationComponent()
+            val viewModel: MainViewModel = viewModel(factory = component.getViewModelFactory())
+            val authState = viewModel.authState.collectAsState(AuthState.Initial)
+            val launcher = rememberLauncherForActivityResult(
+                contract = VK.getVKAuthActivityResultContract()
+            ) {
+                viewModel.performAuthResult()
+            }
+
             VkNewsClientTheme {
-                val viewModel: MainViewModel = viewModel(factory = viewModelFactory)
-                val authState = viewModel.authState.collectAsState(AuthState.Initial)
-                val launcher = rememberLauncherForActivityResult(
-                    contract = VK.getVKAuthActivityResultContract()
-                ) {
-                    viewModel.performAuthResult()
-                }
+
                 when (authState.value) {
                     is AuthState.Authorized -> {
-                        MainScreen(viewModelFactory)
+                        MainScreen()
                     }
 
                     is AuthState.NotAuthorized -> {
@@ -46,7 +42,8 @@ class MainActivity : ComponentActivity() {
                             launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
                         }
                     }
-                    else ->{
+
+                    else -> {
 
                     }
                 }
